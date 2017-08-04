@@ -31,11 +31,13 @@ class Account:
                 self.loan -= pay
 
     def interestLoan(self):
-        self.money -= self.loan*0.0005
+        self.money -= self.loan*0.0005*7
         if self.money < 0:
             self.getLoan(abs(self.money))
 
     def buyTrade(self, price, amount):
+        if self.goods <= 0 and self.money > 0:
+            amount = math.ceil(self.money*self.rate/price/100)*100
         need = price * amount
         need += self.taxTrade('buy', need)
         self.money -= need
@@ -43,6 +45,7 @@ class Account:
             loan = self.getLoan(abs(self.money))
             self.money += loan
         self.goods += amount
+        print('buy:%s price:%s ------ goods:%s money:%s loan:%s' % (amount, price, self.goods, self.money, self.loan))
 
     def sellTrade(self, price, amount):
         tolAsset = self.money + price*self.goods - self.loan
@@ -52,8 +55,10 @@ class Account:
         else:
             canRate = postion - self.rate
             canAmount = min(math.floor(tolAsset*canRate/price), amount)
-            addMoney = canAmount*price - self.taxTrade('sell', canAmount*price)
-            self.money += addMoney
-            self.goods -= canAmount
-            self.payLoan(addMoney)
+            if canAmount > 100:
+                addMoney = canAmount*price - self.taxTrade('sell', canAmount*price)
+                self.money += addMoney
+                self.goods -= canAmount
+                self.payLoan(addMoney)
+                print('sell:%s price:%s ++++++ pos:%s tolAsset:%s' % (canAmount, price, postion, tolAsset))
 

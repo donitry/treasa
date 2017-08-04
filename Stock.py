@@ -11,7 +11,7 @@ class StockPool:
         _st = random.choice(self.st_list['code'].tolist())
         return _st
 
-    def getStockInfo(self, code, ktype):
-        _st_info = tu.get_k_data(code, ktype=ktype)
+    def getStockInfo(self, code, ktype, start):
+        _st_info = tu.get_k_data(code, ktype=ktype, start=start)
         return _st_info[['open', 'close', 'volume']]
 
