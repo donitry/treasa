@@ -50,7 +50,7 @@ class Account:
     def sellTrade(self, price, amount):
         tolAsset = self.money + price*self.goods - self.loan
         postion = price*self.goods/tolAsset
-        if postion < self.rate:
+        if postion < self.rate and self.rate > 0:
             return
         else:
             canRate = postion - self.rate
