@@ -35,30 +35,37 @@ class Account:
         if self.money < 0:
             self.getLoan(abs(self.money))
 
-    def buyTrade(self, price, amount):
-        if self.goods <= 0 and self.money > 0:
-            amount = math.ceil(self.money*self.rate/price/100)*100
+    def buyTrade(self, price, amount=0, loan=True):
+        if self.money > price*100:
+            if self.rate <= 0 and amount == 0:
+                amount = math.ceil(self.money/price/100)*100
+            elif self.goods <= 0 and amount > 0:
+                amount = math.ceil(self.money*self.rate/price/100)*100
         need = price * amount
         need += self.taxTrade('buy', need)
         self.money -= need
-        if self.money < 0:
+        if self.money < 0 and loan:
             loan = self.getLoan(abs(self.money))
             self.money += loan
         self.goods += amount
-        print('buy:%s price:%s ------ goods:%s money:%s loan:%s' % (amount, price, self.goods, self.money, self.loan))
+        print('b:%s price:%s ------ goods:%s money:%s loan:%s' % (amount, price, self.goods, self.money, self.loan))
 
-    def sellTrade(self, price, amount):
+    def sellTrade(self, price, amount=0):
         tolAsset = self.money + price*self.goods - self.loan
         postion = price*self.goods/tolAsset
-        if postion < self.rate and self.rate > 0:
+        if postion < self.rate and amount > 0:
             return
         else:
-            canRate = postion - self.rate
-            canAmount = min(math.floor(tolAsset*canRate/price), amount)
-            if canAmount > 100:
+            if amount > 0:
+                canRate = postion - self.rate
+                canAmount = min(math.floor(tolAsset*canRate/price), amount)
+            else:
+                canAmount = self.goods
+
+            if canAmount >= 100:
                 addMoney = canAmount*price - self.taxTrade('sell', canAmount*price)
                 self.money += addMoney
                 self.goods -= canAmount
                 self.payLoan(addMoney)
-                print('sell:%s price:%s ++++++ pos:%s tolAsset:%s' % (canAmount, price, postion, tolAsset))
+                print('s:%s price:%s ++++++ pos:%s goods:%s tolAsset:%s' % (canAmount, price, postion, self.goods, tolAsset))
 
