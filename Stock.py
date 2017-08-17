@@ -5,11 +5,12 @@ import tushare as tu, random
 
 class StockPool:
     def __init__(self):
+        self.code = None
         self.st_list = tu.get_hs300s()
 
     def choiceRandomStock(self):
-        _st = random.choice(self.st_list['code'].tolist())
-        return _st
+        self.code = random.choice(self.st_list['code'].tolist())
+        return self.code
 
     def getStockInfo(self, code, ktype, start, end):
         _st_info = tu.get_k_data(code, ktype=ktype, start=start, end=end)
