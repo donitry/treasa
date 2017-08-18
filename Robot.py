@@ -26,7 +26,7 @@ class Robot:
 
 if __name__ == "__main__":
     robot = Robot(1000000)
-    trades = 2000
+    trades = 10
     while trades > 0:
         st_info = robot.brain.getStockInfo()
         if not st_info.any():
