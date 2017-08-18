@@ -48,7 +48,7 @@ class Account:
             loan = self.getLoan(abs(self.money))
             self.money += loan
         self.goods += amount
-        print('b:%s price:%s ------ goods:%s money:%s loan:%s' % (amount, price, self.goods, self.money, self.loan))
+        #print('b:%s price:%s ------ goods:%s money:%s loan:%s' % (amount, price, self.goods, self.money, self.loan))
 
     def sellTrade(self, price, amount=0):
         tolAsset = self.money + price*self.goods - self.loan
@@ -67,5 +67,5 @@ class Account:
                 self.money += addMoney
                 self.goods -= canAmount
                 self.payLoan(addMoney)
-                print('s:%s price:%s ++++++ pos:%s goods:%s tolAsset:%s' % (canAmount, price, postion, self.goods, tolAsset))
+                #print('s:%s price:%s ++++++ pos:%s goods:%s tolAsset:%s' % (canAmount, price, postion, self.goods, tolAsset))
 

@@ -3,9 +3,7 @@
 
 import numpy as np
 import hashlib as hl
-import random
 from var_dump import var_dump
-
 #from decimal import Decimal
 
 from Stock import StockPool
