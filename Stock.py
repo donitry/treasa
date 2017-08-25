@@ -6,7 +6,7 @@ import tushare as tu, random
 class StockPool:
     def __init__(self):
         self.code = None
-        self.st_list = tu.get_hs300s()
+        self.st_list = tu.get_sz50s()
 
     def choiceRandomStock(self):
         self.code = random.choice(self.st_list['code'].tolist())

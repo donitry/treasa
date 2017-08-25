@@ -12,9 +12,9 @@ class Robot:
 
     def thinkAboutTrade(self, st_info):
         deci = self.brain.makeDecide(st_info)
-        if deci == 'b' and self.account.goods <= 0:
+        if deci == 'B' and self.account.goods <= 0:
             self.account.buyTrade(st_info[0])
-        elif deci == 's' and self.account.goods > 0:
+        elif deci == 'S' and self.account.goods > 0:
             self.account.sellTrade(st_info[0])
 
 
@@ -26,18 +26,17 @@ class Robot:
 
 if __name__ == "__main__":
     robot = Robot(1000000)
-    trades = 3000
+    trades = 1000
     while trades > 0:
         st_info = robot.brain.getStockInfo()
         if not st_info.any():
             continue
+        #print("begin:+++++money:%s+++goods:%s+++" % (robot.account.money, robot.account.goods))
         for i in st_info:
             robot.thinkAboutTrade(i)
         trades -= 1
-        print("now asset:------%s-----" % (robot.clearGoods(i)))
+        print("end:-----money:%s-----" % (robot.clearGoods(i)))
         if robot.account.money < 50000:
-            print('die')
-            break
             robot.account.money += 1000000
     robot.brain.recordMemory()
 
