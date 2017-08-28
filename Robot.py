@@ -26,7 +26,7 @@ class Robot:
 
 if __name__ == "__main__":
     robot = Robot(1000000)
-    trades = 10
+    trades = 100
     while trades > 0:
         st_info = robot.brain.getStockInfo()
         if not st_info.any():
@@ -37,5 +37,6 @@ if __name__ == "__main__":
         print("now asset:------%s-----" % (robot.clearGoods(i)))
         if robot.account.money < 50000:
             robot.account.money += 1000000
+    robot.brain.recordMemory()
 
 

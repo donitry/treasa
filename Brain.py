@@ -3,6 +3,8 @@
 
 import numpy as np
 import hashlib as hl
+import _pickle as cPickle
+
 from var_dump import var_dump
 #from decimal import Decimal
 
@@ -11,14 +13,24 @@ from Stock import StockPool
 STOCK_KTYPE = 'D'
 TIME_ZONE = ['2014-08-01', '2017-08-14']
 
-C = 1.96
+MEMORY_FILE = 'bmemory.bat'
 
 class Brain:
     def __init__(self):
         self.stock = StockPool()
         self.lastFeature = None
         self.lastStInfo = None
-        self.features = {}
+        try:
+            file = open(MEMORY_FILE, 'rb')
+            self.features = cPickle.load(file)
+            file.close()
+        except (BaseException, FileNotFoundError) as e:
+            self.features = {}
+
+    def recordMemory(self):
+        file = open(MEMORY_FILE, 'wb')
+        cPickle.dump(self.features, file, True)
+        file.close()
 
     def getStockInfo(self, code=None):
         code = self.stock.choiceRandomStock() if not code else code
