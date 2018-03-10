@@ -4,9 +4,9 @@
 import tushare as tu, random
 
 class StockPool:
-    def __init__(self):
+    def __init__(self, st_list=None):
         self.code = None
-        self.st_list = tu.get_hs300s()
+        self.st_list = tu.get_hs300s() if not st_list else st_list
 
     def choiceRandomStock(self):
         self.code = random.choice(self.st_list['code'].tolist())
@@ -21,3 +21,6 @@ class StockPool:
         return _st_info
 
 
+if __name__ == '__main__':
+    stockPool = StockPool()
+    print(stockPool.st_list)
