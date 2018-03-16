@@ -14,7 +14,7 @@ class StockPool:
 
     def getStockInfo(self, code, ktype, start, end):
         _st_info = tu.get_k_data(code, ktype=ktype, start=start, end=end)
-        return _st_info[['date', 'open', 'close', 'volume']]
+        return _st_info
 
     def getStockInfoDetail(self, code, ktype, start, end):
         _st_info = tu.get_hist_data(code, ktype=ktype, start=start, end=end)

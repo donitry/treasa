@@ -2,6 +2,19 @@
 # encoding: utf-8
 
 import math
+from Account import Account
+
+class Trade:
+    def __init__(self):
+        self.acc = Account(1000)
+
+    def tax(self, tType, tAmount):
+        self.acc.cash -= tAmoun*0.0006 if tType=='B' else tAmount*(0.0036)
+        if self.acc.cash < 0:
+            self.acc.getLoan()
+
+
+
 
 class Account:
     def __init__(self, money, rate):
@@ -24,6 +37,7 @@ class Account:
         return math.ceil(amount)
 
     def payLoan(self, amount):
+        '''偿还债务'''
         if self.loan >0:
             if self.money - amount >= 0:
                 pay = min(amount, self.loan)
@@ -31,6 +45,7 @@ class Account:
                 self.loan -= pay
 
     def interestLoan(self):
+        '''获得债务'''
         self.money -= self.loan*0.0005*7
         if self.money < 0:
             self.getLoan(abs(self.money))
