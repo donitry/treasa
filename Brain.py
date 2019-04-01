@@ -9,7 +9,7 @@ from var_dump import var_dump
 from Stock import StockPool
 
 STOCK_KTYPE = 'D'
-TIME_ZONE = ['2014-08-01', '2017-08-14']
+TIME_ZONE = ['2017-03-01', '2019-04-01']
 
 C = 1.96
 
@@ -23,7 +23,7 @@ class Brain:
     def getStockInfo(self, code=None):
         code = self.stock.choiceRandomStock() if not code else code
         st_info = self.stock.getStockInfoDetail(code, STOCK_KTYPE, TIME_ZONE[0], TIME_ZONE[1])
-        return np.array(st_info.sort_index()[['close', 'open', 'ma5', 'ma10', 'ma20', 'v_ma5', 'v_ma10', 'v_ma20', 'turnover']])
+        return np.array(st_info.sort_index()[['close', 'open', 'p_change']])
 
     def checkFeature(self, st_info):
         c_featrue = st_info.copy()
@@ -53,8 +53,25 @@ class Brain:
 
 if __name__ == "__main__":
     brain = Brain()
-    st_info = brain.getStockInfo()
+    st_info = brain.getStockInfo('510050')
+    #print(st_info)
+    nowHold = 0  #0 call 1 put
+    nowWins = 0
+    nowPice = 0
     for info in st_info:
-        brain.makeDecide(info)
-    print(brain.features)
-    print(brain.stock.code)
+        if nowPice == 0:
+            nowPice = info[0]
+        elif info[2]>=1 and nowHold>0:
+            nowHold = 0
+            nowWins = nowWins + (nowPice - info[0])
+            nowPice = info[0]
+        elif info[2]<=-1 and nowHold<=0:
+            nowHold = 1
+            nowWins = nowWins + (info[0] - nowPice)
+            nowPice = info[0]
+        print(info)
+        print('wins:%f pice:%f hold:%d' % (nowWins,nowPice,nowHold))
+
+    print(nowWins)
+    #print(brain.features)
+    #print(brain.stock.code)
